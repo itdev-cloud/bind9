@@ -1,0 +1,11 @@
+$ttl 3600
+example.lan.	IN	SOA	ns. email.domain.lan. (
+			1650483493
+			3600
+			600
+			1209600
+			3600 )
+@	IN	NS	localhost.
+test.example.lan.	IN	A	127.0.0.1
+test.example.lan.   IN  AAAA    ::1
+query.example.lan.	IN	CNAME	test
