@@ -14,9 +14,11 @@ services:
         delay: 5s
         max_attempts: 3 
     volumes:
-    - bind9:/etc/bind
+    - bind9:/bind-data
+    - webmin:/webmin-data
     - cache:/var/cache/bind
 
 volumes:
     bind9:
+    webmin:
     cache:

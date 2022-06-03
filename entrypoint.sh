@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -e
+set -e
 
 #BIND_DATA_DIR=${DATA_DIR}/bind
 
@@ -35,10 +35,26 @@ create_alias_create_key(){
   ln -s /opt/create-key.sh /bin/create-key
 }
 
+run_webmin(){
+  /etc/init.d/webmin start
+  if [ $? != 0 ];then
+    pkill perl
+    rm /var/run/webmin/miniserv.pid
+    /usr/bin/perl /opt/webmin/miniserv.pl /etc/webmin/miniserv.conf
+  fi
+  prev_username=$(cat /opt/user.name)
+  sed -i "s/$prev_username:/${GUI_USER}:/g" /etc/webmin/miniserv.users
+  sed -i "s/$prev_username:/${GUI_USER}:/g" /etc/webmin/webmin.acl
+  sed -i "s/$prev_username/${GUI_USER}/g" /opt/user.name
+  /opt/webmin/changepass.pl /etc/webmin ${GUI_USER} ${GUI_PASSWORD} > /dev/null
+}
+
+
 create_pid_dir
 create_bind_data_dir
 create_bind_cache_dir
 #create_alias_create_key
+#run_webmin
 
 # allow arguments to be passed to named
 if [[ ${1:0:1} = '-' ]]; then
@@ -51,6 +67,7 @@ fi
 
 # default behaviour is to launch named
 if [[ -z ${1} ]]; then
+  run_webmin
   echo "Starting named..."
   exec $(which named) -u ${BIND_USER} -c /etc/bind/named.conf -g ${EXTRA_ARGS}
 else
