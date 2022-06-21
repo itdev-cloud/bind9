@@ -76,7 +76,8 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           # tags: ${{ steps.meta.outputs.tags }}
-          tags: type=semver,enable=true,priority=900,prefix=,suffix=,pattern={{version}},value=latest
+          tags: |
+              type=semver,pattern={{version}},value=v0.0.1
           labels: ${{ steps.meta.outputs.labels }}
 
       # Sign the resulting Docker image digest except on PRs.
