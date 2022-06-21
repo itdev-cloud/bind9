@@ -70,11 +70,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            # output 0.1.2
             type=semver,pattern={{version}}
-            # output 0.1
             type=semver,pattern={{major}}.{{minor}}
-            # disabled if major zero
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'HDNS-5-bind-webmin') }}
             type=ref,event=tag
