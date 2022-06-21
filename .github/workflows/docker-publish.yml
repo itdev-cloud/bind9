@@ -7,9 +7,11 @@ name: Docker-publish
 
 on:
   push:
-    branches: [ "HDNS-5-bind-webmin" ]
+    branches:
+      'HDNS-5-bind-webmin'
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: 
+      'v*'
   # pull_request:
   #   branches: [ "main" ]
 
